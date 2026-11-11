@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Favourite Song</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      background: linear-gradient(135deg, #17143b, #42256f, #0f6170);
+      overflow-x: hidden;
+    }
+    header { padding: 48px 20px 20px; }
+    h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 10px; }
+    .subtitle { color: #e4dafa; font-size: 1.1rem; }
+    main {
+      width: min(900px, 92%);
+      margin: 20px auto 60px;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 20px;
+      background: rgba(255,255,255,.10);
+      box-shadow: 0 12px 35px rgba(0,0,0,.25);
+    }
+    .video-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #080817;
+    }
+    iframe { width: 100%; height: 100%; border: 0; }
+    button {
+      margin-top: 22px;
+      padding: 12px 22px;
+      border: 0;
+      border-radius: 25px;
+      color: #21143b;
+      background: #ffd166;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #ffe29a; transform: scale(1.04); }
+    #note-area {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .music-note {
+      position: absolute;
+      bottom: -40px;
+      color: #ffe08a;
+      font-size: 28px;
+      animation: float-up 4s linear forwards;
+      text-shadow: 0 0 12px rgba(255,224,138,.7);
+    }
+    @keyframes float-up {
+      from { transform: translateY(0) rotate(0deg); opacity: 1; }
+      to { transform: translateY(-110vh) rotate(35deg); opacity: 0; }
+    }
+    footer { padding: 0 20px 25px; color: #e4dafa; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <div id="note-area" aria-hidden="true"></div>
+
+  <header>
+    <h1>🎵 My Favourite Song 🎵</h1>
+    <p class="subtitle">A little music, a little colour, and a little animation!</p>
+  </header>
+
+  <main>
+    <h2>“Perfect” — Ed Sheeran</h2>
+    <p>One of my favourite songs because of its beautiful melody and lyrics.</p>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/2Vv-BfVoq4g"
+        title="Ed Sheeran - Perfect (Official Music Video)"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <button id="musicButton" type="button">Start Music Notes ✨</button>
+    <p id="message">Click the button to make music notes float across the page.</p>
+  </main>
+
+  <footer>Created with HTML, CSS, and JavaScript in Visual Studio.</footer>
+
+  <script>
+    const button = document.getElementById("musicButton");
+    const noteArea = document.getElementById("note-area");
+    const message = document.getElementById("message");
+    let animationTimer = null;
+
+    function createMusicNote() {
+      const note = document.createElement("span");
+      note.className = "music-note";
+      note.textContent = ["♪", "♫", "♬"][Math.floor(Math.random() * 3)];
+      note.style.left = Math.random() * 95 + "vw";
+      note.style.animationDuration = (3 + Math.random() * 2) + "s";
+      noteArea.appendChild(note);
+      note.addEventListener("animationend", () => note.remove());
+    }
+
+    button.addEventListener("click", () => {
+      if (animationTimer) {
+        clearInterval(animationTimer);
+        animationTimer = null;
+        button.textContent = "Start Music Notes ✨";
+        message.textContent = "Animation paused. Click again to restart.";
+      } else {
+        createMusicNote();
+        animationTimer = setInterval(createMusicNote, 450);
+        button.textContent = "Stop Music Notes";
+        message.textContent = "Enjoy the floating music notes!";
+      }
+    });
+  </script>
+</body>
+</html>
